@@ -12,6 +12,8 @@ class WeatherViewController: UIViewController {
     
     @IBOutlet weak var searchBar: UISearchBar!
     
+    
+    //Labels
     @IBOutlet weak var cityLabel: UILabel!
     @IBOutlet weak var conditionLabel: UILabel!
     @IBOutlet weak var currentTempLabel: UILabel!
@@ -24,8 +26,10 @@ class WeatherViewController: UIViewController {
         super.viewDidLoad()
         
         searchBar.delegate = self
-        
+    
         locationManager.delegate = self
+        
+        //requestion location and authorization
         locationManager.requestWhenInUseAuthorization()
         locationManager.requestLocation()
     }
@@ -33,10 +37,20 @@ class WeatherViewController: UIViewController {
 
     //Refresh Location Pressed
     @IBAction func refreshPressed(_ sender: UIButton) {
-        
         locationManager.requestLocation()
-    
     }
+    
+    //update UI
+    func updateUI(weather: WeatherModel){
+        DispatchQueue.main.async {
+            self.cityLabel.text = weather.cityName
+            self.conditionLabel.text = weather.description
+            self.currentTempLabel.text = "\(weather.temp)"
+            self.highTempLabel.text = "\(weather.maxTemp)"
+            self.lowTempLabel.text = "\(weather.minTemp)"
+        }
+    }
+    
 }
 
 // MARK:- Searchbar Delegate
@@ -47,14 +61,7 @@ extension WeatherViewController: UISearchBarDelegate {
         if let searchCityName = searchBar.text {
             Networking.sharedInstance.fetchWeatherWith(searchQuery: searchCityName) { [weak self] (weather) in
                 //Update UI
-                //Must be on main queue to update UI
-                DispatchQueue.main.async {
-                    self?.cityLabel.text = weather.cityName
-                    self?.conditionLabel.text = weather.description
-                    self?.currentTempLabel.text = "\(weather.temp)"
-                    self?.highTempLabel.text = "\(weather.maxTemp)"
-                    self?.lowTempLabel.text = "\(weather.minTemp)"
-                }
+                self?.updateUI(weather: weather)
             }
         }
         searchBar.text = ""
@@ -70,21 +77,24 @@ extension WeatherViewController: UISearchBarDelegate {
 
 //MARK:- Location Manager Delegate
 extension WeatherViewController: CLLocationManagerDelegate {
+    
     public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]){
         
+    
+        //the locations is an array of locations, the last being the most recent
         if let location = locations.last {
             locationManager.stopUpdatingLocation()
+            
+            //latitude
             let lat = location.coordinate.latitude
+            //longitude
             let lon = location.coordinate.longitude
         
+            //fetch weather with latitude and longitude
             Networking.sharedInstance.fetchWeatherWithLocation(lat: lat, lot: lon) { [weak self] (weather) in
                 
                 DispatchQueue.main.async {
-                    self?.cityLabel.text = weather.cityName
-                    self?.conditionLabel.text = weather.description
-                    self?.currentTempLabel.text = "\(weather.temp)"
-                    self?.highTempLabel.text = "\(weather.maxTemp)"
-                    self?.lowTempLabel.text = "\(weather.minTemp)"
+                    self?.updateUI(weather: weather)
                 }
             }
         }
