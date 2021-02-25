@@ -9,6 +9,7 @@ import Foundation
 
 class Networking {
     
+    //Create a singleton of this class
     static let sharedInstance = Networking()
     
     //base url with API key
@@ -16,10 +17,19 @@ class Networking {
     
     
     
-    func fetchWeatherBy(cityName: String, completion: @escaping (WeatherModel) -> Void ){
+    func fetchWeatherBy(searchQuery: String, completion: @escaping (WeatherModel) -> Void ){
+        
+        var urlString = ""
+        
+        //check if searchQuery is a zipcode
+        if Int(searchQuery) != nil {
+            urlString = baseURL + "&zip=\(searchQuery)"
+        } else {
+            urlString = baseURL + "&q=\(searchQuery)"
+        }
         
         //make URL
-        if let url = URL(string: baseURL + "&q=\(cityName)") {
+        if let url = URL(string: urlString) {
             //create URL Session
             let task = URLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) in
                 

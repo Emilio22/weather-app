@@ -1,5 +1,3 @@
-//   let result = try? newJSONDecoder().decode(Result.self, from: jsonData)
-
 import Foundation
 
 // MARK: - Result
