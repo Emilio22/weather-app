@@ -22,12 +22,14 @@ class Networking {
         if let url = URL(string: baseURL + "&q=\(cityName)") {
             //create URL Session
             let task = URLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) in
+                
+                //check if there is an error, if so return
                 if let error = error {
                     print("Error with fetching films: \(error)")
                     return
                 }
                 
-                //Parse Jason
+                //if there is data, parse the JSON
                 if let data = data {
                     do{
                         let decoder = JSONDecoder()
@@ -36,13 +38,14 @@ class Networking {
                         let temp = result.main.temp
                         let minTemp = result.main.minTemp
                         let maxTemp = result.main.maxTemp
-                        let description = result.weather.description
+                        let description = result.weather[0].weatherDescription
                         
                         let weather = WeatherModel(cityName: cityName,
                                                    temp: temp,
                                                    minTemp: minTemp,
                                                    maxTemp: maxTemp,
                                                    description: description)
+                        //send back weather
                         completion(weather)
                         
                     } catch let error {

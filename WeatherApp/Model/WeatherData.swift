@@ -23,5 +23,9 @@ struct Main: Codable {
 
 // MARK: - Weather
 struct Weather: Codable {
-    let description: String
+    let weatherDescription: String
+    
+    enum CodingKeys: String, CodingKey {
+        case weatherDescription = "description"
+    }
 }

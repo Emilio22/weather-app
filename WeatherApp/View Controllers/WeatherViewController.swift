@@ -35,7 +35,16 @@ extension WeatherViewController: UISearchBarDelegate {
 
     //When user enters search
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        cityLabel.text = searchBar.text
+        if let searchCityName = searchBar.text {
+            Networking.sharedInstance.fetchWeatherBy(cityName: searchCityName) { [weak self] (weather) in
+                DispatchQueue.main.async {
+                    self?.cityLabel.text = weather.cityName
+                    self?.conditionLabel.text = weather.description
+                    self?.currentTempLabel.text = "\(weather.temp)"
+                }
+            }
+        }
+        
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
