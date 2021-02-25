@@ -30,6 +30,7 @@
 		85D5131125E73FC7008DAB13 /* Networking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
 		85D5131425E74386008DAB13 /* WeatherData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherData.swift; sourceTree = "<group>"; };
 		85D5132225E74FFC008DAB13 /* WeatherModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherModel.swift; sourceTree = "<group>"; };
+		85D5132525E7833C008DAB13 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -46,6 +47,7 @@
 		853185B525E720C1007B24FF = {
 			isa = PBXGroup;
 			children = (
+				85D5132525E7833C008DAB13 /* README.md */,
 				853185C025E720C1007B24FF /* WeatherApp */,
 				853185BF25E720C1007B24FF /* Products */,
 			);
