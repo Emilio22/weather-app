@@ -12,6 +12,49 @@ class Networking {
     static let sharedInstance = Networking()
     
     //base url with API key
-    let baseURL = "https://api.openweathermap.org/data/2.5/weather?appid=695f0cfd188cf1fd5fd0f4abf7eef184"
+    let baseURL = "https://api.openweathermap.org/data/2.5/weather?appid=695f0cfd188cf1fd5fd0f4abf7eef184&units=Imperial"
+    
+    
+    
+    func fetchWeatherBy(cityName: String, completion: @escaping (WeatherModel) -> Void ){
+        
+        //make URL
+        if let url = URL(string: baseURL + "&q=\(cityName)") {
+            //create URL Session
+            let task = URLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) in
+                if let error = error {
+                    print("Error with fetching films: \(error)")
+                    return
+                }
+                
+                //Parse Jason
+                if let data = data {
+                    do{
+                        let decoder = JSONDecoder()
+                        let result = try decoder.decode(Result.self, from: data)
+                        let cityName = result.name
+                        let temp = result.main.temp
+                        let minTemp = result.main.minTemp
+                        let maxTemp = result.main.maxTemp
+                        let description = result.weather.description
+                        
+                        let weather = WeatherModel(cityName: cityName,
+                                                   temp: temp,
+                                                   minTemp: minTemp,
+                                                   maxTemp: maxTemp,
+                                                   description: description)
+                        completion(weather)
+                        
+                    } catch let error {
+                        print(error.localizedDescription)
+                    }
+                }
+                    
+            })
+            task.resume()
+        }
+        
+        
+    }
     
 }

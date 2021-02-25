@@ -1,3 +1,4 @@
+//   let result = try? newJSONDecoder().decode(Result.self, from: jsonData)
 
 import Foundation
 
@@ -22,6 +23,5 @@ struct Main: Codable {
 
 // MARK: - Weather
 struct Weather: Codable {
-    let id: Int
     let description: String
 }
