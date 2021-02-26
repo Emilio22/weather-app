@@ -18,7 +18,7 @@ class Networking {
     
     func fetchWeatherWith(searchQuery: String, completion: @escaping (WeatherModel) -> Void ){
         var urlString = ""
-        //check if searchQuery is a zipcode
+        //check if searchQuery is a zipcode or string
         if Int(searchQuery) != nil {
             urlString = baseURL + "&zip=\(searchQuery)"
         } else {
@@ -68,8 +68,8 @@ class Networking {
     }
     
     
-    func fetchWeatherWithLocation(lat: CLLocationDegrees, lot: CLLocationDegrees, completion: @escaping (WeatherModel) -> Void) {
-        let urlString = "\(baseURL)&lat=\(lat)&lon=\(lot)"
+    func fetchWeatherWithLocation(lat: CLLocationDegrees, lon: CLLocationDegrees, completion: @escaping (WeatherModel) -> Void) {
+        let urlString = "\(baseURL)&lat=\(lat)&lon=\(lon)"
 
         if let url = URL(string: urlString) {
             //create URL Session

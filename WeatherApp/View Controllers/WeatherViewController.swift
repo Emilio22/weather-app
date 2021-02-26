@@ -45,9 +45,9 @@ class WeatherViewController: UIViewController {
         DispatchQueue.main.async {
             self.cityLabel.text = weather.cityName
             self.conditionLabel.text = weather.description
-            self.currentTempLabel.text = "\(weather.temp)"
-            self.highTempLabel.text = "\(weather.maxTemp)"
-            self.lowTempLabel.text = "\(weather.minTemp)"
+            self.currentTempLabel.text = weather.tempString
+            self.highTempLabel.text = weather.maxTempString
+            self.lowTempLabel.text = weather.minTempString
         }
     }
     
@@ -91,7 +91,7 @@ extension WeatherViewController: CLLocationManagerDelegate {
             let lon = location.coordinate.longitude
         
             //fetch weather with latitude and longitude
-            Networking.sharedInstance.fetchWeatherWithLocation(lat: lat, lot: lon) { [weak self] (weather) in
+            Networking.sharedInstance.fetchWeatherWithLocation(lat: lat, lon: lon) { [weak self] (weather) in
                 
                 DispatchQueue.main.async {
                     self?.updateUI(weather: weather)

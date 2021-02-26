@@ -13,4 +13,17 @@ struct WeatherModel {
     let minTemp: Double
     let maxTemp: Double
     let description: String
+    
+    //Computed properties to create formatted strings from temp values
+    var tempString: String {
+        (String(format: "%.0f", temp))
+    }
+    
+    var minTempString: String {
+        (String(format: "%.0f", minTemp))
+    }
+    
+    var maxTempString: String {
+        (String(format: "%.0f", maxTemp))
+    }
 }
