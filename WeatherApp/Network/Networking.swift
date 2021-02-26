@@ -35,7 +35,7 @@ class Networking {
                 
                 //check if there is an error, if so return
                 if let error = error {
-                    print("Error with fetching films: \(error)")
+                    print("Error with fetching weather: \(error)")
                     return
                 }
                 
@@ -47,8 +47,6 @@ class Networking {
             })
             task.resume()
         }
-        
-        
     }
     
     // Fetch weather with latitude and longitude
@@ -58,13 +56,11 @@ class Networking {
         if let url = URL(string: urlString) {
             //create URL Session
             let task = URLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) in
-                
                 //check if there is an error, if so return
                 if let error = error {
-                    print("Error with fetching films: \(error)")
+                    print("Error with fetching weather: \(error)")
                     return
                 }
-                
                 //if there is data, parse the JSON
                 if let weather = self.parseJSONtoWeather(data: data){
                     completion(weather)
@@ -76,7 +72,6 @@ class Networking {
     }
     
     func parseJSONtoWeather(data: Data?) -> WeatherModel? {
-        
         //Check if there is data
         if let data = data {
             do{

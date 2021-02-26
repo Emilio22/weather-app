@@ -59,6 +59,7 @@ extension WeatherViewController: UISearchBarDelegate {
     //When user enters search
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if let searchCityName = searchBar.text {
+            // use weak self to prevent retain cycles
             Networking.sharedInstance.fetchWeatherWith(searchQuery: searchCityName) { [weak self] (weather) in
                 //Update UI
                 self?.updateUI(weather: weather)
