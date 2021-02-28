@@ -10,7 +10,7 @@ import CoreLocation
 
 class WeatherViewController: UIViewController {
     
-    @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var searchBar: UISearchBar!      
     
     
     //Labels
@@ -20,13 +20,17 @@ class WeatherViewController: UIViewController {
     @IBOutlet weak var highTempLabel: UILabel!
     @IBOutlet weak var lowTempLabel: UILabel!
     
+    @IBOutlet weak var tempUnitLabel: UILabel!
+    
+    var tempUnitIsCelcius = false
+    
     let locationManager = CLLocationManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tempUnitLabel.text = "C"
         
         searchBar.delegate = self
-    
         locationManager.delegate = self
         
         //requestion location and authorization
@@ -45,7 +49,13 @@ class WeatherViewController: UIViewController {
         DispatchQueue.main.async {
             self.cityLabel.text = weather.cityName
             self.conditionLabel.text = weather.description
-            self.currentTempLabel.text = weather.tempString
+            
+            if self.tempUnitIsCelcius {
+                self.currentTempLabel.text = weather.celciusTempString
+            } else {
+                self.currentTempLabel.text = weather.tempString
+            }
+            
             self.highTempLabel.text = weather.maxTempString
             self.lowTempLabel.text = weather.minTempString
         }
@@ -59,10 +69,19 @@ extension WeatherViewController: UISearchBarDelegate {
     //When user enters search
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if let searchCityName = searchBar.text {
+            // fetch weather by city name or zipcode
             // use weak self to prevent retain cycles
-            Networking.sharedInstance.fetchWeatherWith(searchQuery: searchCityName) { [weak self] (weather) in
+            Networking.sharedInstance.fetchWeatherWith(searchQuery: searchCityName) { [weak self] (result) in
                 //Update UI
-                self?.updateUI(weather: weather)
+                
+                switch result {
+                case .success(let weather):
+                        self?.updateUI(weather: weather)
+                case .failure(let error):
+                    print(error)
+                
+                }
+            
             }
         }
         searchBar.text = ""
@@ -92,10 +111,17 @@ extension WeatherViewController: CLLocationManagerDelegate {
             let lon = location.coordinate.longitude
         
             //fetch weather with latitude and longitude
-            Networking.sharedInstance.fetchWeatherWithLocation(lat: lat, lon: lon) { [weak self] (weather) in
-                
-                DispatchQueue.main.async {
-                    self?.updateUI(weather: weather)
+            Networking.sharedInstance.fetchWeatherWithLocation(lat: lat, lon: lon) { [weak self] result in
+                //If network call is successful, update UI with retrieve weather
+                //else display error
+                switch result {
+                case .success(let weather):
+                    DispatchQueue.main.async {
+                        self?.updateUI(weather: weather)
+                    }
+                case .failure(let error):
+                    //TODO: Display error message
+                    print(error)
                 }
             }
         }

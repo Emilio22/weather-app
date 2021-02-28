@@ -16,9 +16,10 @@ class Networking {
     //base url with API key
     let baseURL = "https://api.openweathermap.org/data/2.5/weather?appid=695f0cfd188cf1fd5fd0f4abf7eef184&units=Imperial"
     
+
     
     // Fetch Weather with a search Query.  Function then differentiates if the query is a city name or zipcode and then builds a URL to make API call
-    func fetchWeatherWith(searchQuery: String, completion: @escaping (WeatherModel) -> Void ){
+    func fetchWeatherWith(searchQuery: String, completion: @escaping (Result<WeatherModel,WeatherError>) -> Void ){
         var urlString = ""
         //check if searchQuery is a zipcode or string
         if Int(searchQuery) != nil {
@@ -35,13 +36,16 @@ class Networking {
                 
                 //check if there is an error, if so return
                 if let error = error {
-                    print("Error with fetching weather: \(error)")
+                    print(error)
+                    completion(.failure(.unableToComplete))
                     return
                 }
                 
                 //if there is data, parse the JSON
                 if let weather = self.parseJSONtoWeather(data: data){
-                    completion(weather)
+                    completion(.success(weather))
+                } else {
+                    completion(.failure(.invalidData))
                 }
     
             })
@@ -50,7 +54,7 @@ class Networking {
     }
     
     // Fetch weather with latitude and longitude
-    func fetchWeatherWithLocation(lat: CLLocationDegrees, lon: CLLocationDegrees, completion: @escaping (WeatherModel) -> Void) {
+    func fetchWeatherWithLocation(lat: CLLocationDegrees, lon: CLLocationDegrees, completion: @escaping (Result<WeatherModel,WeatherError>) -> Void) {
         let urlString = "\(baseURL)&lat=\(lat)&lon=\(lon)"
 
         if let url = URL(string: urlString) {
@@ -58,12 +62,15 @@ class Networking {
             let task = URLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) in
                 //check if there is an error, if so return
                 if let error = error {
-                    print("Error with fetching weather: \(error)")
+                    print(error)
+                    completion(.failure(.unableToComplete))
                     return
                 }
                 //if there is data, parse the JSON
                 if let weather = self.parseJSONtoWeather(data: data){
-                    completion(weather)
+                    completion(.success(weather))
+                } else {
+                    completion(.failure(.invalidData))
                 }
                 
             })
@@ -77,7 +84,7 @@ class Networking {
             do{
                 //parse JSON into an instance of WeatherModel
                 let decoder = JSONDecoder()
-                let result = try decoder.decode(Result.self, from: data)
+                let result = try decoder.decode(WeatherData.self, from: data)
                 let cityName = result.name
                 let temp = result.main.temp
                 let minTemp = result.main.minTemp
@@ -91,7 +98,7 @@ class Networking {
                                            description: description)
                 return(weather)
             } catch let error {
-                print(error.localizedDescription)
+                print(error)
             }
         }
         //return nil if no data

@@ -26,4 +26,12 @@ struct WeatherModel {
     var maxTempString: String {
         (String(format: "%.0f", maxTemp))
     }
+    
+    var celcius: Double {
+        (temp - 32) *  (5/9)
+    }
+    
+    var celciusTempString: String {
+        (String(format: "%.0f", celcius))
+    }
 }

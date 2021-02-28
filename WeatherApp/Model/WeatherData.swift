@@ -1,7 +1,7 @@
 import Foundation
 
 // MARK: - Result
-struct Result: Codable {
+struct WeatherData: Codable {
     let weather: [Weather]
     let main: Main
     let name: String

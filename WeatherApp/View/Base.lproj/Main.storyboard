@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="retina3_5" orientation="portrait" appearance="light"/>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="LEM-ag-xbY">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -13,18 +13,18 @@
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="WeatherViewController" customModule="WeatherApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <searchBar contentMode="redraw" placeholder="Enter City or Zip" translatesAutoresizingMaskIntoConstraints="NO" id="BCa-JE-htn">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="0.0"/>
+                                <rect key="frame" x="0.0" y="88" width="414" height="56"/>
                                 <textInputTraits key="textInputTraits"/>
                             </searchBar>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="33" translatesAutoresizingMaskIntoConstraints="NO" id="utZ-hi-EOD">
-                                <rect key="frame" x="0.0" y="34" width="320" height="446"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="33" translatesAutoresizingMaskIntoConstraints="NO" id="utZ-hi-EOD">
+                                <rect key="frame" x="0.0" y="178" width="414" height="684"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="fLv-Fn-pMZ" userLabel="Outputs">
-                                        <rect key="frame" x="76.5" y="0.0" width="167.5" height="250"/>
+                                        <rect key="frame" x="123.5" y="0.0" width="167.5" height="250"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="St. Louis" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yHg-N4-dFO" userLabel="City Label">
                                                 <rect key="frame" x="19" y="0.0" width="129.5" height="61"/>
@@ -117,12 +117,8 @@
                                             <constraint firstAttribute="height" constant="250" id="aOC-01-jDv"/>
                                         </constraints>
                                     </stackView>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pAi-gu-W4U">
-                                        <rect key="frame" x="40" y="283" width="240" height="80"/>
-                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                    </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="E55-bd-kmk">
-                                        <rect key="frame" x="40" y="396" width="240" height="50"/>
+                                        <rect key="frame" x="87" y="634" width="240" height="50"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NaL-0r-jX0" userLabel="Refresh Location Button">
                                                 <rect key="frame" x="0.0" y="0.0" width="240" height="50"/>
@@ -157,6 +153,7 @@
                             <constraint firstItem="utZ-hi-EOD" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="zKe-yR-cOc"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="Etp-Ma-iZc"/>
                     <connections>
                         <outlet property="cityLabel" destination="yHg-N4-dFO" id="Tby-Im-x83"/>
                         <outlet property="conditionLabel" destination="ia0-vK-UT9" id="g2t-xb-R80"/>
@@ -164,9 +161,28 @@
                         <outlet property="highTempLabel" destination="JWE-j1-gZD" id="O8H-ug-fvv"/>
                         <outlet property="lowTempLabel" destination="4sh-3y-Djc" id="5OY-JU-1Eg"/>
                         <outlet property="searchBar" destination="BCa-JE-htn" id="DMt-8f-uOR"/>
+                        <outlet property="tempUnitLabel" destination="q8S-df-Jha" id="sud-Ic-zuP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="884.05797101449286" y="75.669642857142847"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="TpG-7t-Pau">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="LEM-ag-xbY" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="LUR-R5-iHq">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="T18-ah-rSN"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="F1X-iW-QFo" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-26.086956521739133" y="75.669642857142847"/>
         </scene>
