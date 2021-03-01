@@ -12,6 +12,7 @@ class WeatherViewController: UIViewController {
     
     @IBOutlet weak var searchBar: UISearchBar!      
     
+    @IBOutlet weak var tempUnitSwitch: UISegmentedControl!
     
     //Labels
     @IBOutlet weak var cityLabel: UILabel!
@@ -22,13 +23,12 @@ class WeatherViewController: UIViewController {
     
     @IBOutlet weak var tempUnitLabel: UILabel!
     
-    var tempUnitIsCelcius = false
+    var currentWeather : WeatherModel?
     
     let locationManager = CLLocationManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tempUnitLabel.text = "C"
         
         searchBar.delegate = self
         locationManager.delegate = self
@@ -45,20 +45,28 @@ class WeatherViewController: UIViewController {
     }
     
     //update UI
-    func updateUI(weather: WeatherModel){
+    func updateUI(){
         DispatchQueue.main.async {
-            self.cityLabel.text = weather.cityName
-            self.conditionLabel.text = weather.description
-            
-            if self.tempUnitIsCelcius {
-                self.currentTempLabel.text = weather.celciusTempString
-            } else {
-                self.currentTempLabel.text = weather.tempString
-            }
-            
-            self.highTempLabel.text = weather.maxTempString
-            self.lowTempLabel.text = weather.minTempString
+            self.cityLabel.text = self.currentWeather?.cityName
+            self.conditionLabel.text = self.currentWeather?.description
+            self.currentTempLabel.text = self.currentWeather?.tempString
+            self.highTempLabel.text = self.currentWeather?.maxTempString
+            self.lowTempLabel.text = self.currentWeather?.minTempString
         }
+    }
+    
+    @IBAction func indexChanged(_ sender: UISegmentedControl) {
+        switch tempUnitSwitch.selectedSegmentIndex {
+        case 0:
+            currentWeather?.isCelcius = false
+            tempUnitLabel.text = "F"
+        case 1:
+            currentWeather?.isCelcius = true
+            tempUnitLabel.text = "C"
+        default:
+            break
+        }
+        updateUI()
     }
     
 }
@@ -76,7 +84,12 @@ extension WeatherViewController: UISearchBarDelegate {
                 
                 switch result {
                 case .success(let weather):
-                        self?.updateUI(weather: weather)
+                    self?.currentWeather = weather
+                    DispatchQueue.main.async {
+                        self?.tempUnitSwitch.selectedSegmentIndex = 0
+                        self?.tempUnitLabel.text = "F"
+                    }
+                    self?.updateUI()
                 case .failure(let error):
                     print(error)
                 
@@ -116,9 +129,12 @@ extension WeatherViewController: CLLocationManagerDelegate {
                 //else display error
                 switch result {
                 case .success(let weather):
+                    self?.currentWeather = weather
                     DispatchQueue.main.async {
-                        self?.updateUI(weather: weather)
+                        self?.tempUnitSwitch.selectedSegmentIndex = 0
+                        self?.tempUnitLabel.text = "F"
                     }
+                    self?.updateUI()
                 case .failure(let error):
                     //TODO: Display error message
                     print(error)
