@@ -52,6 +52,7 @@ class WeatherViewController: UIViewController {
             self.currentTempLabel.text = self.currentWeather?.tempString
             self.highTempLabel.text = self.currentWeather?.maxTempString
             self.lowTempLabel.text = self.currentWeather?.minTempString
+            self.tempUnitLabel.text = self.currentWeather?.unitSymbol
         }
     }
     
@@ -59,10 +60,8 @@ class WeatherViewController: UIViewController {
         switch tempUnitSwitch.selectedSegmentIndex {
         case 0:
             currentWeather?.isCelcius = false
-            tempUnitLabel.text = "F"
         case 1:
             currentWeather?.isCelcius = true
-            tempUnitLabel.text = "C"
         default:
             break
         }
@@ -87,7 +86,6 @@ extension WeatherViewController: UISearchBarDelegate {
                     self?.currentWeather = weather
                     DispatchQueue.main.async {
                         self?.tempUnitSwitch.selectedSegmentIndex = 0
-                        self?.tempUnitLabel.text = "F"
                     }
                     self?.updateUI()
                 case .failure(let error):
@@ -132,7 +130,6 @@ extension WeatherViewController: CLLocationManagerDelegate {
                     self?.currentWeather = weather
                     DispatchQueue.main.async {
                         self?.tempUnitSwitch.selectedSegmentIndex = 0
-                        self?.tempUnitLabel.text = "F"
                     }
                     self?.updateUI()
                 case .failure(let error):

@@ -13,6 +13,7 @@ struct WeatherModel {
     var minTemp: Double
     var maxTemp: Double
     let description: String
+    var unitSymbol = "F"
     
     //Computed properties to create formatted strings from temp values
     var tempString: String {
@@ -57,8 +58,10 @@ struct WeatherModel {
         willSet {
             if isCelcius == true {
                 convertWeatherToFahrenheight()
+                unitSymbol = "F"
             } else {
                 convertWeatherToCelcius()
+                unitSymbol = "C"
             }
         }
     }
